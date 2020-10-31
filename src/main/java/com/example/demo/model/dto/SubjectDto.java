@@ -26,7 +26,9 @@ public class SubjectDto {
         this.name = subject.getName();
         this.rating = subject.getRating();
         this.ratingCount = subject.getRatingCount();
-        this.teacherId = subject.getTeacher().getId();
+        if (subject.getTeacher() != null) {
+            this.teacherId = subject.getTeacher().getId();
+        }
     }
 
     public Long getId() {
