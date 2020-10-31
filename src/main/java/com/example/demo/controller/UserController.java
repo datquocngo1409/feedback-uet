@@ -93,10 +93,10 @@ public class UserController {
         return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(value = "/user/getByToken", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/user/getByUsername", method = RequestMethod.GET)
     public ResponseEntity<UserDto> getUserByToken(@RequestParam Map<String, String> parameters) {
-        String token = parameters.get("token");
-        User user = userService.findByToken(token);
+        String username = parameters.get("username");
+        User user = userService.findByUsername(username);
         if (user == null) {
             return new ResponseEntity<UserDto>(HttpStatus.NOT_FOUND);
         } else {
