@@ -13,6 +13,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 @RestController
 @CrossOrigin(value = "*", maxAge = 3600)
 public class UserController {
@@ -89,5 +91,17 @@ public class UserController {
 
         userService.deleteUser(id);
         return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
+    }
+
+    @RequestMapping(value = "/user/getByToken", method = RequestMethod.PATCH)
+    public ResponseEntity<UserDto> getUserByToken(@RequestParam Map<String, String> parameters) {
+        String token = parameters.get("token");
+        User user = userService.findByToken(token);
+        if (user == null) {
+            return new ResponseEntity<UserDto>(HttpStatus.NOT_FOUND);
+        } else {
+            UserDto userDto = new UserDto(user);
+            return new ResponseEntity<UserDto>(userDto, HttpStatus.OK);
+        }
     }
 }
