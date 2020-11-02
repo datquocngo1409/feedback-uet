@@ -19,6 +19,8 @@ public class SubjectDto {
 
     private String teacherName;
 
+    private String startDate;
+
     public SubjectDto() {
     }
 
@@ -28,6 +30,7 @@ public class SubjectDto {
         this.name = subject.getName();
         this.rating = subject.getRating();
         this.ratingCount = subject.getRatingCount();
+        this.startDate = subject.getStartDate();
         if (subject.getTeacher() != null) {
             this.teacherId = subject.getTeacher().getId();
             this.teacherName = subject.getTeacher().getUser().getName();
@@ -80,5 +83,21 @@ public class SubjectDto {
 
     public void setTeacherId(Long teacherId) {
         this.teacherId = teacherId;
+    }
+
+    public String getTeacherName() {
+        return teacherName;
+    }
+
+    public void setTeacherName(String teacherName) {
+        this.teacherName = teacherName;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
     }
 }

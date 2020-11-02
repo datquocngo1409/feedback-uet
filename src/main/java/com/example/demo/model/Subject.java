@@ -21,6 +21,8 @@ public class Subject {
 
     private int ratingCount = 0;
 
+    private String startDate;
+
     @ManyToOne
     private Teacher teacher;
 
@@ -30,14 +32,33 @@ public class Subject {
     public Subject() {
     }
 
-    public Subject(Long id, @NotNull String code, @NotNull String name, double rating, int ratingCount, Teacher teacher, List<Student> studentList) {
+    public Subject(Long id, @NotNull String code, @NotNull String name, double rating, int ratingCount, String startDate, Teacher teacher, List<Student> studentList) {
         this.id = id;
         this.code = code;
         this.name = name;
         this.rating = rating;
         this.ratingCount = ratingCount;
+        this.startDate = startDate;
         this.teacher = teacher;
         this.studentList = studentList;
+    }
+
+    public Subject(@NotNull String code, @NotNull String name, double rating, int ratingCount, String startDate, Teacher teacher, List<Student> studentList) {
+        this.code = code;
+        this.name = name;
+        this.rating = rating;
+        this.ratingCount = ratingCount;
+        this.startDate = startDate;
+        this.teacher = teacher;
+        this.studentList = studentList;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
     }
 
     public Long getId() {
