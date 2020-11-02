@@ -17,6 +17,8 @@ public class SubjectDto {
 
     private Long teacherId;
 
+    private String teacherName;
+
     public SubjectDto() {
     }
 
@@ -28,6 +30,7 @@ public class SubjectDto {
         this.ratingCount = subject.getRatingCount();
         if (subject.getTeacher() != null) {
             this.teacherId = subject.getTeacher().getId();
+            this.teacherName = subject.getTeacher().getUser().getName();
         }
     }
 

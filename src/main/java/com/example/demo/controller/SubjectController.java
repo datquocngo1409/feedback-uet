@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Subject;
+import com.example.demo.model.Teacher;
 import com.example.demo.model.dto.SubjectDto;
 import com.example.demo.service.SubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +74,9 @@ public class SubjectController {
             return new ResponseEntity<SubjectDto>(HttpStatus.NOT_FOUND);
         }
 
+        Teacher teacher = object.getTeacher();
         current = object;
+        current.setTeacher(teacher);
 
         subjectService.update(current);
         SubjectDto subjectDto = new SubjectDto(current);
