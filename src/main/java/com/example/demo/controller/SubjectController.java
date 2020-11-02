@@ -4,6 +4,7 @@ import com.example.demo.model.Subject;
 import com.example.demo.model.Teacher;
 import com.example.demo.model.dto.SubjectDto;
 import com.example.demo.service.SubjectService;
+import com.example.demo.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,9 @@ import java.util.List;
 public class SubjectController {
     @Autowired
     public SubjectService subjectService;
+
+    @Autowired
+    public TeacherService teacherService;
 
     //API trả về List Subject.
     @RequestMapping(value = "/subject", method = RequestMethod.GET)
@@ -96,6 +100,43 @@ public class SubjectController {
 
         subjectService.delete(id);
         return new ResponseEntity<Subject>(HttpStatus.NO_CONTENT);
+    }
+
+    @RequestMapping(value = "/subject/updateDate/{id}/{updateDate}", method = RequestMethod.PATCH)
+    public ResponseEntity<SubjectDto> updateDate(@PathVariable("id") Long id, @PathVariable("startDate") String startDate) {
+        System.out.println("Updating Subject " + id);
+
+        Subject current = subjectService.findById(id);
+
+        if (current == null) {
+            System.out.println("Subject with id " + id + " not found");
+            return new ResponseEntity<SubjectDto>(HttpStatus.NOT_FOUND);
+        }
+
+        current.setStartDate(startDate);
+
+        subjectService.update(current);
+        SubjectDto subjectDto = new SubjectDto(current);
+        return new ResponseEntity<SubjectDto>(subjectDto, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/subject/updateTeacher/{id}/{teacherId}", method = RequestMethod.PATCH)
+    public ResponseEntity<SubjectDto> updateTeacher(@PathVariable("id") Long id, @PathVariable("teacherId") Long teacherId) {
+        System.out.println("Updating Subject " + id);
+
+        Subject current = subjectService.findById(id);
+
+        if (current == null) {
+            System.out.println("Subject with id " + id + " not found");
+            return new ResponseEntity<SubjectDto>(HttpStatus.NOT_FOUND);
+        }
+
+        Teacher teacher = teacherService.findById(teacherId);
+        current.setTeacher(teacher);
+
+        subjectService.update(current);
+        SubjectDto subjectDto = new SubjectDto(current);
+        return new ResponseEntity<SubjectDto>(subjectDto, HttpStatus.OK);
     }
 
 }
