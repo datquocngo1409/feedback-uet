@@ -17,6 +17,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class SubjectController {
@@ -101,7 +102,8 @@ public class SubjectController {
     }
 
     @RequestMapping(value = "/subject/updateDate/{id}", method = RequestMethod.PATCH)
-    public ResponseEntity<SubjectDto> updateDate(@PathVariable("id") Long id, @RequestParam(name = "startDate") String startDate) {
+    public ResponseEntity<SubjectDto> updateDate(@PathVariable("id") Long id, @RequestParam Map<String, String> parameters) {
+        String startDate = parameters.get("startDate");
         System.out.println("Updating Subject " + id);
 
         Subject current = subjectService.findById(id);
