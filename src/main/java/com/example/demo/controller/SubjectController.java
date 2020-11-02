@@ -102,7 +102,7 @@ public class SubjectController {
     }
 
     @RequestMapping(value = "/subject/updateDate/{id}", method = RequestMethod.PATCH)
-    public ResponseEntity<SubjectDto> updateDate(@PathVariable("id") Long id, @RequestParam Map<String, String> parameters) {
+    public ResponseEntity<SubjectDto> updateDate(@PathVariable("id") Long id, @RequestBody Map<String, String> parameters) {
         String startDate = parameters.get("startDate");
         System.out.println(startDate);
         System.out.println("Updating Subject " + id);
