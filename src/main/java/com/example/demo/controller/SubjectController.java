@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,7 +101,7 @@ public class SubjectController {
     }
 
     @RequestMapping(value = "/subject/updateDate/{id}", method = RequestMethod.PATCH)
-    public ResponseEntity<SubjectDto> updateDate(@PathVariable("id") Long id, @RequestParam("startDate") String startDate) {
+    public ResponseEntity<SubjectDto> updateDate(@PathVariable("id") Long id, @Valid String startDate) {
         System.out.println("Updating Subject " + id);
 
         Subject current = subjectService.findById(id);
