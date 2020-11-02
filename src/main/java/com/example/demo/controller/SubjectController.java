@@ -11,10 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.ArrayList;
@@ -102,8 +99,8 @@ public class SubjectController {
         return new ResponseEntity<Subject>(HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(value = "/subject/updateDate/{id}/{updateDate}", method = RequestMethod.PATCH)
-    public ResponseEntity<SubjectDto> updateDate(@PathVariable("id") Long id, @PathVariable("startDate") String startDate) {
+    @RequestMapping(value = "/subject/updateDate/{id}", method = RequestMethod.PATCH)
+    public ResponseEntity<SubjectDto> updateDate(@PathVariable("id") Long id, @RequestParam String startDate) {
         System.out.println("Updating Subject " + id);
 
         Subject current = subjectService.findById(id);
