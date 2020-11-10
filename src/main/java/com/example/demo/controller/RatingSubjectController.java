@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,6 +75,10 @@ public class RatingSubjectController {
         object.setPoint(ratingValue.getPoint());
         object.setStudentName(student.getUser().getName());
         object.setStudentAvatar(student.getUser().getAvatar());
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss dd/MM/yyyy");
+        LocalDateTime now = LocalDateTime.now();
+        object.setCreationTime(dtf.format(now));
         System.out.println("Creating RatingSubject " + object.getId());
         ratingSubjectService.rate(object);
         HttpHeaders headers = new HttpHeaders();
