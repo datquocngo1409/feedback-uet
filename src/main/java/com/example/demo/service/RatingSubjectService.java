@@ -32,6 +32,7 @@ public class RatingSubjectService {
         Subject subject = subjectRepository.findById(ratingSubject.getSubject().getId()).get();
         if (oldRating == null) {
             subject.setRating((subject.getRating() * subject.getRatingCount() + ratingSubject.getPoint())/(subject.getRatingCount() + 1));
+            subject.setRatingCount(subject.getRatingCount() + 1);
             subjectRepository.save(subject);
             ratingSubjectRepository.save(ratingSubject);
         } else {
