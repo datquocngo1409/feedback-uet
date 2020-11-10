@@ -1,10 +1,15 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.RatingSubject;
+import com.example.demo.model.Student;
+import com.example.demo.model.Subject;
 import com.example.demo.model.Teacher;
 import com.example.demo.model.dto.RatingSubjectDto;
+import com.example.demo.model.dto.RatingSubjectRequestDto;
 import com.example.demo.model.dto.TeacherDto;
 import com.example.demo.service.RatingSubjectService;
+import com.example.demo.service.StudentService;
+import com.example.demo.service.SubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -24,6 +29,10 @@ import java.util.List;
 public class RatingSubjectController {
     @Autowired
     public RatingSubjectService ratingSubjectService;
+    @Autowired
+    private StudentService studentService;
+    @Autowired
+    private SubjectService subjectService;
 
     //API trả về List Rating Subject.
     @RequestMapping(value = "/rating-subject", method = RequestMethod.GET)
@@ -55,7 +64,15 @@ public class RatingSubjectController {
 
     //rate
     @RequestMapping(value = "/rating-subject/rate", method = RequestMethod.POST)
-    public ResponseEntity<Void> createRatingSubject(@RequestBody RatingSubject object, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity<Void> createRatingSubject(@RequestBody RatingSubjectRequestDto ratingValue, UriComponentsBuilder ucBuilder) {
+        RatingSubject object = new RatingSubject();
+        Student student = studentService.findById(ratingValue.getStudentId());
+        Subject subject = subjectService.findById(ratingValue.getSubjectId());
+        object.setStudent(student);
+        object.setSubject(subject);
+        object.setPoint(ratingValue.getPoint());
+        object.setStudentName(student.getUser().getName());
+        object.setStudentAvatar(student.getUser().getAvatar());
         System.out.println("Creating RatingSubject " + object.getId());
         ratingSubjectService.rate(object);
         HttpHeaders headers = new HttpHeaders();
