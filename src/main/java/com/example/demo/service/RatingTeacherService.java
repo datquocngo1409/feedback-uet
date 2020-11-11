@@ -32,6 +32,7 @@ public class RatingTeacherService {
         Teacher teacher = teacherRepository.findById(ratingTeacher.getTeacher().getId()).get();
         if (oldRating == null) {
             teacher.setRating((teacher.getRating() * teacher.getRatingCount() + ratingTeacher.getPoint())/(teacher.getRatingCount() + 1));
+            teacher.setRatingCount(teacher.getRatingCount() + 1);
             teacherRepository.save(teacher);
             ratingTeacherRepository.save(ratingTeacher);
         } else {

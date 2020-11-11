@@ -1,7 +1,10 @@
 package com.example.demo.controller;
-import com.example.demo.model.RatingTeacher;
+import com.example.demo.model.*;
 import com.example.demo.model.dto.RatingTeacherDto;
+import com.example.demo.model.dto.RatingTeacherRequestDto;
 import com.example.demo.service.RatingTeacherService;
+import com.example.demo.service.StudentService;
+import com.example.demo.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -14,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +26,10 @@ import java.util.List;
 public class RatingTeacherController {
     @Autowired
     public RatingTeacherService ratingTeacherService;
+    @Autowired
+    public TeacherService teacherService;
+    @Autowired
+    private StudentService studentService;
 
     //API trả về List Rating Subject.
     @RequestMapping(value = "/rating-teacher", method = RequestMethod.GET)
@@ -52,7 +61,19 @@ public class RatingTeacherController {
 
     //rate
     @RequestMapping(value = "/rating-teacher/rate", method = RequestMethod.POST)
-    public ResponseEntity<Void> createRatingTeacher(@RequestBody RatingTeacher object, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity<Void> createRatingTeacher(@RequestBody RatingTeacherRequestDto ratingValue, UriComponentsBuilder ucBuilder) {
+        RatingTeacher object = new RatingTeacher();
+        Student student = studentService.findById(ratingValue.getStudentId());
+        Teacher teacher = teacherService.findById(ratingValue.getTeacherId());
+        object.setStudent(student);
+        object.setTeacher(teacher);
+        object.setPoint(ratingValue.getPoint());
+        object.setStudentName(student.getUser().getName());
+        object.setStudentAvatar(student.getUser().getAvatar());
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss dd/MM/yyyy");
+        LocalDateTime now = LocalDateTime.now();
+        object.setCreationTime(dtf.format(now));
         System.out.println("Creating RatingTeacher " + object.getId());
         ratingTeacherService.rate(object);
         HttpHeaders headers = new HttpHeaders();
