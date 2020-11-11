@@ -1,8 +1,10 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Student;
+import com.example.demo.model.User;
 import com.example.demo.model.dto.StudentDto;
 import com.example.demo.service.StudentService;
+import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,8 @@ import java.util.List;
 public class StudentController {
     @Autowired
     public StudentService studentService;
+    @Autowired
+    public UserService userService;
 
     //API trả về List Student.
     @RequestMapping(value = "/student", method = RequestMethod.GET)
@@ -45,6 +49,19 @@ public class StudentController {
         Student object = studentService.findById(id);
         if (object == null) {
             System.out.println("Student with id " + id + " not found");
+            return new ResponseEntity<StudentDto>(HttpStatus.NOT_FOUND);
+        }
+        StudentDto studentDto = new StudentDto(object);
+        return new ResponseEntity<StudentDto>(studentDto, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/student/by-user/{userId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<StudentDto> getStudentByUserId(@PathVariable("userId") Long userId) {
+        User user = userService.findById(userId);
+        Student object = studentService.findByUser(user);
+        System.out.println("Fetching Student with id " + object.getId());
+        if (object == null) {
+            System.out.println("Student with id " + object.getId() + " not found");
             return new ResponseEntity<StudentDto>(HttpStatus.NOT_FOUND);
         }
         StudentDto studentDto = new StudentDto(object);

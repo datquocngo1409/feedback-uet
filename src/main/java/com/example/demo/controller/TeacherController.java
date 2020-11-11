@@ -1,8 +1,10 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Teacher;
+import com.example.demo.model.User;
 import com.example.demo.model.dto.TeacherDto;
 import com.example.demo.service.TeacherService;
+import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,8 @@ import java.util.List;
 public class TeacherController {
     @Autowired
     public TeacherService teacherService;
+    @Autowired
+    private UserService userService;
 
     //API trả về List Teacher.
     @RequestMapping(value = "/teacher", method = RequestMethod.GET)
@@ -45,6 +49,19 @@ public class TeacherController {
         Teacher object = teacherService.findById(id);
         if (object == null) {
             System.out.println("Teacher with id " + id + " not found");
+            return new ResponseEntity<TeacherDto>(HttpStatus.NOT_FOUND);
+        }
+        TeacherDto teacherDto = new TeacherDto(object);
+        return new ResponseEntity<TeacherDto>(teacherDto, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/teacher/by-user/{userId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<TeacherDto> getTeacherByUserId(@PathVariable("userId") Long userId) {
+        User user = userService.findById(userId);
+        Teacher object = teacherService.findByUser(user);
+        System.out.println("Fetching Teacher with id " + object.getId());
+        if (object == null) {
+            System.out.println("Teacher with id " + object.getId() + " not found");
             return new ResponseEntity<TeacherDto>(HttpStatus.NOT_FOUND);
         }
         TeacherDto teacherDto = new TeacherDto(object);
