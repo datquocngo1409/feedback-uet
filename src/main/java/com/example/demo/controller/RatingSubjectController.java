@@ -54,14 +54,29 @@ public class RatingSubjectController {
     //API trả về RatingSubject có ID trên url.
     @RequestMapping(value = "/rating-subject/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RatingSubjectDto> getRatingSubjectById(@PathVariable("id") Long id) {
-        System.out.println("Fetching RatingSubject with id " + id);
         RatingSubject object = ratingSubjectService.findById(id);
         if (object == null) {
-            System.out.println("RatingSubject with id " + id + " not found");
+            System.out.println("RatingSubject not found");
             return new ResponseEntity<RatingSubjectDto>(HttpStatus.NOT_FOUND);
         }
         RatingSubjectDto ratingSubjectDtos = new RatingSubjectDto(object);
         return new ResponseEntity<RatingSubjectDto>(ratingSubjectDtos, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/rating-subject/by-subject/{subjectId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<RatingSubjectDto>> getRatingSubjectBySubjectId(@PathVariable("subjectId") Long subjectId) {
+        Subject subject = subjectService.findById(subjectId);
+        List<RatingSubject> object = ratingSubjectService.findAllBySubject(subject);
+        if (object == null) {
+            System.out.println("RatingSubject not found");
+            return new ResponseEntity<List<RatingSubjectDto>>(HttpStatus.NOT_FOUND);
+        }
+        List<RatingSubjectDto> ratingSubjectDtoList = new ArrayList<>();
+        for (RatingSubject ratingSubject : object) {
+            RatingSubjectDto dto = new RatingSubjectDto(ratingSubject);
+            ratingSubjectDtoList.add(dto);
+        }
+        return new ResponseEntity<List<RatingSubjectDto>>(ratingSubjectDtoList, HttpStatus.OK);
     }
 
     //rate
@@ -79,7 +94,6 @@ public class RatingSubjectController {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss dd/MM/yyyy");
         LocalDateTime now = LocalDateTime.now();
         object.setCreationTime(dtf.format(now));
-        System.out.println("Creating RatingSubject " + object.getId());
         ratingSubjectService.rate(object);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/rating-subject/{id}").buildAndExpand(object.getId()).toUri());
@@ -89,11 +103,9 @@ public class RatingSubjectController {
     //API xóa một Admin với ID trên url.
     @RequestMapping(value = "/rating-subject/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<RatingSubject> deleteRatingSubject(@PathVariable("id") Long id) {
-        System.out.println("Fetching & Deleting RatingSubject with id " + id);
-
         RatingSubject object = ratingSubjectService.findById(id);
         if (object == null) {
-            System.out.println("Unable to delete. RatingSubject with id " + id + " not found");
+            System.out.println("Unable to delete. RatingSubject not found");
             return new ResponseEntity<RatingSubject>(HttpStatus.NOT_FOUND);
         }
 

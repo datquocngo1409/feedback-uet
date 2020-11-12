@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 import com.example.demo.model.*;
+import com.example.demo.model.dto.RatingSubjectDto;
 import com.example.demo.model.dto.RatingTeacherDto;
 import com.example.demo.model.dto.RatingTeacherRequestDto;
 import com.example.demo.service.RatingTeacherService;
@@ -49,14 +50,29 @@ public class RatingTeacherController {
     //API trả về RatingTeacher có ID trên url.
     @RequestMapping(value = "/rating-teacher/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RatingTeacherDto> getRatingTeacherById(@PathVariable("id") Long id) {
-        System.out.println("Fetching RatingTeacher with id " + id);
         RatingTeacher object = ratingTeacherService.findById(id);
         if (object == null) {
-            System.out.println("RatingTeacher with id " + id + " not found");
+            System.out.println("RatingTeacher not found");
             return new ResponseEntity<RatingTeacherDto>(HttpStatus.NOT_FOUND);
         }
         RatingTeacherDto ratingSubjectDtos = new RatingTeacherDto(object);
         return new ResponseEntity<RatingTeacherDto>(ratingSubjectDtos, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/rating-subject/by-teacher/{teacherId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<RatingTeacherDto>> getRatingSubjectBySubjectId(@PathVariable("teacherId") Long teacherId) {
+        Teacher teacher = teacherService.findById(teacherId);
+        List<RatingTeacher> object = ratingTeacherService.findAllByTeacher(teacher);
+        if (object == null) {
+            System.out.println("RatingSubject not found");
+            return new ResponseEntity<List<RatingTeacherDto>>(HttpStatus.NOT_FOUND);
+        }
+        List<RatingTeacherDto> ratingSubjectDtoList = new ArrayList<>();
+        for (RatingTeacher ratingTeacher : object) {
+            RatingTeacherDto dto = new RatingTeacherDto(ratingTeacher);
+            ratingSubjectDtoList.add(dto);
+        }
+        return new ResponseEntity<List<RatingTeacherDto>>(ratingSubjectDtoList, HttpStatus.OK);
     }
 
     //rate
@@ -74,7 +90,6 @@ public class RatingTeacherController {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss dd/MM/yyyy");
         LocalDateTime now = LocalDateTime.now();
         object.setCreationTime(dtf.format(now));
-        System.out.println("Creating RatingTeacher " + object.getId());
         ratingTeacherService.rate(object);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/rating-teacher/{id}").buildAndExpand(object.getId()).toUri());
@@ -84,11 +99,10 @@ public class RatingTeacherController {
     //API xóa một Admin với ID trên url.
     @RequestMapping(value = "/rating-teacher/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<RatingTeacher> RatingTeacher(@PathVariable("id") Long id) {
-        System.out.println("Fetching & Deleting RatingTeacher with id " + id);
 
         RatingTeacher object = ratingTeacherService.findById(id);
         if (object == null) {
-            System.out.println("Unable to delete. RatingTeacher with id " + id + " not found");
+            System.out.println("Unable to delete. RatingTeacher not found");
             return new ResponseEntity<RatingTeacher>(HttpStatus.NOT_FOUND);
         }
 

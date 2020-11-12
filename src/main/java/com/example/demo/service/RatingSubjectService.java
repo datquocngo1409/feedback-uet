@@ -23,6 +23,10 @@ public class RatingSubjectService {
         return ratingSubjectRepository.findAll();
     }
 
+    public List<RatingSubject> findAllBySubject(Subject subject) {
+        return ratingSubjectRepository.findAllBySubject(subject);
+    }
+
     public RatingSubject findById(Long id) {
         return ratingSubjectRepository.findById(id).get();
     }

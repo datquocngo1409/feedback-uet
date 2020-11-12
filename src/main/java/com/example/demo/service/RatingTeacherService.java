@@ -23,6 +23,10 @@ public class RatingTeacherService {
         return ratingTeacherRepository.findAll();
     }
 
+    public List<RatingTeacher> findAllByTeacher(Teacher teacher) {
+        return ratingTeacherRepository.findAllByTeacher(teacher);
+    }
+
     public RatingTeacher findById(Long id) {
         return ratingTeacherRepository.findById(id).get();
     }
