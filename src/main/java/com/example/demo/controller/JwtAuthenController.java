@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.config.JwtTokenUtil;
+import com.example.demo.model.authentication.CustomUser;
 import com.example.demo.model.authentication.JwtRequest;
 import com.example.demo.model.authentication.JwtResponse;
 import com.example.demo.model.authentication.RequestUser;

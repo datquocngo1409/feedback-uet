@@ -28,6 +28,7 @@ public class StudentService {
 
     public void create(User user) {
         Student student = new Student(user);
+        student.setMssv(getMaxMssv() + 1);
         studentRepository.save(student);
     }
 
@@ -51,5 +52,16 @@ public class StudentService {
             students.add(student);
         }
         return students;
+    }
+
+    public int getMaxMssv() {
+        List<Student> students = studentRepository.findAll();
+        int maxMssv = 0;
+        for (Student student : students) {
+            if (maxMssv < student.getMssv()) {
+                maxMssv = student.getMssv();
+            }
+        }
+        return maxMssv;
     }
 }
