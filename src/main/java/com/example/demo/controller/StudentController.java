@@ -42,6 +42,15 @@ public class StudentController {
         return new ResponseEntity<List<StudentDto>>(studentDtos, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/student/full", method = RequestMethod.GET)
+    public ResponseEntity<List<Student>> getAllFull() {
+        List<Student> listObject = studentService.findAll();
+        if (listObject.isEmpty()) {
+            return new ResponseEntity<List<Student>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
+        }
+        return new ResponseEntity<List<Student>>(listObject, HttpStatus.OK);
+    }
+
     //API trả về Student có ID trên url.
     @RequestMapping(value = "/student/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<StudentDto> getStudentById(@PathVariable("id") Long id) {
@@ -53,6 +62,18 @@ public class StudentController {
         }
         StudentDto studentDto = new StudentDto(object);
         return new ResponseEntity<StudentDto>(studentDto, HttpStatus.OK);
+    }
+
+    //API trả về Student có ID trên url.
+    @RequestMapping(value = "/student/full/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Student> getStudentByIdFull(@PathVariable("id") Long id) {
+        System.out.println("Fetching Student with id " + id);
+        Student object = studentService.findById(id);
+        if (object == null) {
+            System.out.println("Student with id " + id + " not found");
+            return new ResponseEntity<Student>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<Student>(object, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/student/by-user/{userId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
