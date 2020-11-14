@@ -45,7 +45,12 @@ public class StudentService {
     }
 
     public void delete(Long id) {
+        Student student = studentRepository.findById(id).get();
+        User user = student.getUser();
         studentRepository.deleteById(id);
+        if (user != null) {
+            userRepository.delete(student.getUser());
+        }
     }
 
     public Student findByUser(User user) {
