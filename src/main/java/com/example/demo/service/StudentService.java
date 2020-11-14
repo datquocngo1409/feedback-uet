@@ -26,9 +26,17 @@ public class StudentService {
         return studentRepository.findById(id).get();
     }
 
-    public void create(User user) {
+    public Student findByMssv(int mssv) {
+        return studentRepository.findByMssv(mssv);
+    }
+
+    public void create(User user, int mssv) {
         Student student = new Student(user);
-        student.setMssv(getMaxMssv() + 1);
+        if (mssv <= 0) {
+            student.setMssv(getMaxMssv() + 1);
+        } else {
+            student.setMssv(mssv);
+        }
         studentRepository.save(student);
     }
 

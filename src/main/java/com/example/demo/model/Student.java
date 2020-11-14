@@ -11,7 +11,7 @@ public class Student {
 
     @Column(unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int mssv;
+    private int mssv = 0;
 
     @OneToOne
     private User user;

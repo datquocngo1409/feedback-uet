@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.config.JwtTokenUtil;
+import com.example.demo.model.Student;
 import com.example.demo.model.authentication.CustomUser;
 import com.example.demo.model.authentication.JwtRequest;
 import com.example.demo.model.authentication.JwtResponse;
@@ -78,15 +79,19 @@ public class JwtAuthenController {
         for (User userFor : users) {
             if (userFor.getUsername().equals(user.getUsername())) isExit = true;
         }
+        Student student = studentService.findByMssv(user.getMssv());
+        if (student != null) {
+            isExit = true;
+        }
         if (!isExit) {
             User userSave = new User(user.getUsername(), user.getPassword());
             userSave.setName(user.getName());
             userSave.setRole("STUDENT");
             userService.createUser(userSave);
-            studentService.create(userSave);
+            studentService.create(userSave, user.getMssv());
             return ResponseEntity.ok(userDetailsService.save(user));
         } else {
-            return ResponseEntity.ok(null);
+            return ResponseEntity.ok("Student is exited");
         }
     }
 
