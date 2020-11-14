@@ -97,7 +97,8 @@ public class SubjectController {
             return new ResponseEntity<Subject>(HttpStatus.NOT_FOUND);
         }
 
-        subjectService.delete(id);
+        System.out.println(object.toString());
+        subjectService.delete(object);
         return new ResponseEntity<Subject>(HttpStatus.NO_CONTENT);
     }
 
