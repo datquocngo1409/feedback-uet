@@ -26,9 +26,6 @@ public class Subject {
     @ManyToOne
     private Teacher teacher;
 
-    @ManyToMany
-    private List<Student> studentList;
-
     public Subject() {
     }
 
@@ -40,7 +37,6 @@ public class Subject {
         this.ratingCount = ratingCount;
         this.startDate = startDate;
         this.teacher = teacher;
-        this.studentList = studentList;
     }
 
     public Subject(@NotNull String code, @NotNull String name, double rating, int ratingCount, String startDate, Teacher teacher, List<Student> studentList) {
@@ -50,7 +46,6 @@ public class Subject {
         this.ratingCount = ratingCount;
         this.startDate = startDate;
         this.teacher = teacher;
-        this.studentList = studentList;
     }
 
     public String getStartDate() {
@@ -107,13 +102,5 @@ public class Subject {
 
     public void setTeacher(Teacher teacher) {
         this.teacher = teacher;
-    }
-
-    public List<Student> getStudentList() {
-        return studentList;
-    }
-
-    public void setStudentList(List<Student> studentList) {
-        this.studentList = studentList;
     }
 }
