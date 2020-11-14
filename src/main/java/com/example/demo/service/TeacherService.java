@@ -35,7 +35,12 @@ public class TeacherService {
     }
 
     public void delete(Long id) {
+        Teacher teacher = teacherRepository.findById(id).get();
+        User user = teacher.getUser();
         teacherRepository.deleteById(id);
+        if (user != null) {
+            userRepository.delete(user);
+        }
     }
 
     public Teacher findByUser(User user) {
