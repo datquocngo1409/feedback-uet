@@ -89,6 +89,7 @@ public class CommentController {
             String listReplyId = (parentComment.getReplyCommentId() != null)? parentComment.getReplyCommentId() : "";
             listReplyId = listReplyId + ", " + comment.getId();
             parentComment.setReplyCommentId(listReplyId);
+            commentService.update(parentComment);
             headers.setLocation(ucBuilder.path("/comment/{id}").buildAndExpand(comment.getId()).toUri());
         }
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
