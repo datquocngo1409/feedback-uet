@@ -30,8 +30,8 @@ public class SubjectService {
         subjectRepository.save(subject);
     }
 
-    public void delete(Subject object) {
-        subjectRepository.delete(object);
+    public void delete(long id) {
+        subjectRepository.deleteById(id);
     }
 
     public List<Subject> findAllByCodeContaining(String code) {

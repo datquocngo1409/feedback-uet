@@ -18,13 +18,13 @@ public class CommentService {
         return commentRepository.findAll();
     }
 
-//    public List<Comment> findAllBySubject(Subject subject) {
-//        return commentRepository.findAllBySubject(subject);
-//    }
-//
-//    public List<Comment> findAllBySubjectAndReply(Subject subject, boolean reply) {
-//        return commentRepository.findAllBySubjectAndReply(subject, reply);
-//    }
+    public List<Comment> findAllBySubject(Subject subject) {
+        return commentRepository.findAllBySubject(subject);
+    }
+
+    public List<Comment> findAllBySubjectAndReply(Subject subject, boolean reply) {
+        return commentRepository.findAllBySubjectAndReply(subject, reply);
+    }
 
     public Comment findById(Long id) {
         return commentRepository.findById(id).get();

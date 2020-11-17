@@ -1,6 +1,10 @@
 package com.example.demo.model;
 
+import com.example.demo.model.dto.CommentRequestDto;
+
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 @Entity
@@ -43,6 +47,16 @@ public class Comment {
         this.isReply = isReply;
         this.replyCommentId = replyCommentId;
         this.likeNumber = likeNumber;
+    }
+
+    public Comment(CommentRequestDto commentRequestDto) {
+        this.content = commentRequestDto.getContent();
+        this.isReply = commentRequestDto.isReply();
+        this.replyCommentId = commentRequestDto.getReplyCommentId();
+        this.likeNumber = 0;
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss dd/MM/yyyy");
+        LocalDateTime now = LocalDateTime.now();
+        this.creationTime = dtf.format(now);
     }
 
     public Long getId() {
