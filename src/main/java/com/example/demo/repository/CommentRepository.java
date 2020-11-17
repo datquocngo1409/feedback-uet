@@ -10,5 +10,4 @@ import java.util.List;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     public List<Comment> findAllBySubject(Subject subject);
-    public List<Comment> findAllBySubjectAndReply(Subject subject, boolean reply);
 }
