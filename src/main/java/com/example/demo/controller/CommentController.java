@@ -85,6 +85,7 @@ public class CommentController {
             comment.setSubject(subject);
             comment.setStudent(student);
             comment.setReply(true);
+            comment.setParentId(commentId);
             commentService.update(comment);
             String listReplyId = (parentComment.getReplyCommentId() != null)? parentComment.getReplyCommentId() : "";
             if (listReplyId.equals("")) {

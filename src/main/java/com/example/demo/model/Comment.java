@@ -33,6 +33,8 @@ public class Comment {
 
     private int likeNumber;
 
+    private Long parentId;
+
     public Comment() {
     }
 
@@ -139,5 +141,13 @@ public class Comment {
 
     public void setLikeNumber(int likeNumber) {
         this.likeNumber = likeNumber;
+    }
+
+    public Long getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
     }
 }

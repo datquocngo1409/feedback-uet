@@ -27,6 +27,8 @@ public class CommentDto {
 
     private int likeNumber;
 
+    private Long parentId;
+
     public CommentDto() {
     }
 
@@ -41,6 +43,7 @@ public class CommentDto {
         this.isReply = comment.isReply();
         this.replyCommentId = comment.getReplyCommentId();
         this.likeNumber = comment.getLikeNumber();
+        this.parentId = comment.getParentId();
     }
 
     public Long getId() {
@@ -121,5 +124,13 @@ public class CommentDto {
 
     public void setLikeNumber(int likeNumber) {
         this.likeNumber = likeNumber;
+    }
+
+    public Long getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
     }
 }
