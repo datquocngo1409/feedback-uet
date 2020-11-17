@@ -33,7 +33,6 @@ public class CommentController {
     @Autowired
     public SubjectService subjectService;
 
-    //API trả về List Comment.
     @RequestMapping(value = "/comment", method = RequestMethod.GET)
     public ResponseEntity<List<CommentDto>> listAllComments() {
         List<Comment> accounts = commentService.findAll();
@@ -48,7 +47,6 @@ public class CommentController {
         return new ResponseEntity<List<CommentDto>>(commentDtos, HttpStatus.OK);
     }
 
-    //API trả về Comment có ID trên url.
     @RequestMapping(value = "/comment/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CommentDto> getCommentById(@PathVariable("id") Long id) {
         System.out.println("Fetching Comment with id " + id);
@@ -76,7 +74,26 @@ public class CommentController {
         return new ResponseEntity<List<CommentDto>>(commentDtos, HttpStatus.OK);
     }
 
-    //API tạo một Admin mới.
+    @RequestMapping(value = "/comment/rep/{commentId}", method = RequestMethod.POST)
+    public ResponseEntity<Void> createCommentRep(@RequestBody CommentRequestDto commentRequestDto, UriComponentsBuilder ucBuilder, @PathVariable("commentId") Long commentId) {
+        HttpHeaders headers = new HttpHeaders();
+        Comment parentComment = commentService.findById(commentId);
+        if (parentComment != null) {
+            Comment comment = new Comment(commentRequestDto);
+            Student student = studentService.findById(commentRequestDto.getStudentId());
+            Subject subject = subjectService.findById(commentRequestDto.getSubjectId());
+            comment.setSubject(subject);
+            comment.setStudent(student);
+            comment.setReply(true);
+            commentService.update(comment);
+            String listReplyId = (parentComment.getReplyCommentId() != null)? parentComment.getReplyCommentId() : "";
+            listReplyId = listReplyId + ", " + comment.getId();
+            parentComment.setReplyCommentId(listReplyId);
+            headers.setLocation(ucBuilder.path("/comment/{id}").buildAndExpand(comment.getId()).toUri());
+        }
+        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+    }
+
     @RequestMapping(value = "/comment", method = RequestMethod.POST)
     public ResponseEntity<Void> createComment(@RequestBody CommentRequestDto commentRequestDto, UriComponentsBuilder ucBuilder) {
         Comment comment = new Comment(commentRequestDto);
@@ -90,7 +107,6 @@ public class CommentController {
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
     }
 
-    //API cập nhật một Admin với ID trên url.
     @RequestMapping(value = "/comment/{id}", method = RequestMethod.PATCH)
     public ResponseEntity<CommentDto> updateAdmin(@PathVariable("id") Long id, @RequestBody CommentRequestDto commentRequestDto) {
         System.out.println("Updating Comment " + id);
@@ -116,7 +132,6 @@ public class CommentController {
         return new ResponseEntity<CommentDto>(commentDto, HttpStatus.OK);
     }
 
-    //API xóa một Admin với ID trên url.
     @RequestMapping(value = "/comment/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Comment> deleteComment(@PathVariable("id") Long id) {
 
