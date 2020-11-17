@@ -72,6 +72,8 @@ public class Comment {
     }
 
     public void setStudent(Student student) {
+        this.studentName = student.getUser().getName();
+        this.studentAvatar = student.getUser().getAvatar();
         this.student = student;
     }
 

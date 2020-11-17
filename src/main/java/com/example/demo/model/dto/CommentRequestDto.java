@@ -10,10 +10,6 @@ public class CommentRequestDto {
 
     private Long subjectId;
 
-    private String studentName;
-
-    private String studentAvatar;
-
     private String content;
 
     private boolean isReply;
@@ -23,11 +19,9 @@ public class CommentRequestDto {
     public CommentRequestDto() {
     }
 
-    public CommentRequestDto(Long studentId, Long subjectId, String studentName, String studentAvatar, String content, boolean isReply, String replyCommentId) {
+    public CommentRequestDto(Long studentId, Long subjectId, String content, boolean isReply, String replyCommentId) {
         this.studentId = studentId;
         this.subjectId = subjectId;
-        this.studentName = studentName;
-        this.studentAvatar = studentAvatar;
         this.content = content;
         this.isReply = isReply;
         this.replyCommentId = replyCommentId;
@@ -55,22 +49,6 @@ public class CommentRequestDto {
 
     public void setSubjectId(Long subjectId) {
         this.subjectId = subjectId;
-    }
-
-    public String getStudentName() {
-        return studentName;
-    }
-
-    public void setStudentName(String studentName) {
-        this.studentName = studentName;
-    }
-
-    public String getStudentAvatar() {
-        return studentAvatar;
-    }
-
-    public void setStudentAvatar(String studentAvatar) {
-        this.studentAvatar = studentAvatar;
     }
 
     public String getContent() {
