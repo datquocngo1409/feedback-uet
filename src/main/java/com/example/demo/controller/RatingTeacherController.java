@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 import com.example.demo.model.*;
-import com.example.demo.model.dto.RatingSubjectDto;
 import com.example.demo.model.dto.RatingTeacherDto;
 import com.example.demo.model.dto.RatingTeacherRequestDto;
 import com.example.demo.service.RatingTeacherService;
@@ -32,19 +31,19 @@ public class RatingTeacherController {
     @Autowired
     private StudentService studentService;
 
-    //API trả về List Rating Subject.
+    //API trả về List Rating Teacher.
     @RequestMapping(value = "/rating-teacher", method = RequestMethod.GET)
     public ResponseEntity<List<RatingTeacherDto>> listAllRatingTeachers() {
         List<RatingTeacher> listObject = ratingTeacherService.findAll();
         if (listObject.isEmpty()) {
             return new ResponseEntity<List<RatingTeacherDto>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
         }
-        List<RatingTeacherDto> ratingSubjectDtos = new ArrayList<>();
-        for (RatingTeacher ratingSubject : listObject) {
-            RatingTeacherDto ratingSubjectDto = new RatingTeacherDto(ratingSubject);
-            ratingSubjectDtos.add(ratingSubjectDto);
+        List<RatingTeacherDto> ratingTeacherDtos = new ArrayList<>();
+        for (RatingTeacher ratingTeacher : listObject) {
+            RatingTeacherDto ratingTeacherDto = new RatingTeacherDto(ratingTeacher);
+            ratingTeacherDtos.add(ratingTeacherDto);
         }
-        return new ResponseEntity<List<RatingTeacherDto>>(ratingSubjectDtos, HttpStatus.OK);
+        return new ResponseEntity<List<RatingTeacherDto>>(ratingTeacherDtos, HttpStatus.OK);
     }
 
     //API trả về RatingTeacher có ID trên url.
@@ -55,24 +54,24 @@ public class RatingTeacherController {
             System.out.println("RatingTeacher not found");
             return new ResponseEntity<RatingTeacherDto>(HttpStatus.NOT_FOUND);
         }
-        RatingTeacherDto ratingSubjectDtos = new RatingTeacherDto(object);
-        return new ResponseEntity<RatingTeacherDto>(ratingSubjectDtos, HttpStatus.OK);
+        RatingTeacherDto ratingTeacherDtos = new RatingTeacherDto(object);
+        return new ResponseEntity<RatingTeacherDto>(ratingTeacherDtos, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/rating-subject/by-teacher/{teacherId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<RatingTeacherDto>> getRatingSubjectBySubjectId(@PathVariable("teacherId") Long teacherId) {
+    @RequestMapping(value = "/rating-teacher/by-teacher/{teacherId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<RatingTeacherDto>> getRatingTeacherByTeacherId(@PathVariable("teacherId") Long teacherId) {
         Teacher teacher = teacherService.findById(teacherId);
         List<RatingTeacher> object = ratingTeacherService.findAllByTeacher(teacher);
         if (object == null) {
-            System.out.println("RatingSubject not found");
+            System.out.println("RatingTeacher not found");
             return new ResponseEntity<List<RatingTeacherDto>>(HttpStatus.NOT_FOUND);
         }
-        List<RatingTeacherDto> ratingSubjectDtoList = new ArrayList<>();
+        List<RatingTeacherDto> ratingTeacherDtoList = new ArrayList<>();
         for (RatingTeacher ratingTeacher : object) {
             RatingTeacherDto dto = new RatingTeacherDto(ratingTeacher);
-            ratingSubjectDtoList.add(dto);
+            ratingTeacherDtoList.add(dto);
         }
-        return new ResponseEntity<List<RatingTeacherDto>>(ratingSubjectDtoList, HttpStatus.OK);
+        return new ResponseEntity<List<RatingTeacherDto>>(ratingTeacherDtoList, HttpStatus.OK);
     }
 
     //rate
