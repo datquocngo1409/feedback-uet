@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+import com.example.demo.model.dto.SubjectDto;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -46,6 +48,15 @@ public class Subject {
         this.ratingCount = ratingCount;
         this.startDate = startDate;
         this.teacher = teacher;
+    }
+
+    public Subject(SubjectDto dto) {
+        this.id = dto.getId();
+        this.code = dto.getCode();
+        this.name = dto.getName();
+        this.rating = dto.getRating();
+        this.ratingCount = dto.getRatingCount();
+        this.startDate = dto.getStartDate();
     }
 
     public String getStartDate() {

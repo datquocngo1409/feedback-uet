@@ -67,7 +67,7 @@ public class SubjectController {
 
     //API cập nhật một Admin với ID trên url.
     @RequestMapping(value = "/subject/{id}", method = RequestMethod.PATCH)
-    public ResponseEntity<SubjectDto> updateAdmin(@PathVariable("id") Long id, @RequestBody Subject object) {
+    public ResponseEntity<SubjectDto> updateAdmin(@PathVariable("id") Long id, @RequestBody SubjectDto subjectDto) {
         System.out.println("Updating Subject " + id);
 
         Subject current = subjectService.findById(id);
@@ -77,13 +77,13 @@ public class SubjectController {
             return new ResponseEntity<SubjectDto>(HttpStatus.NOT_FOUND);
         }
 
-        Teacher teacher = object.getTeacher();
-        current = object;
+        Teacher teacher = teacherService.findById(subjectDto.getTeacherId());
+        current = new Subject(subjectDto);
         current.setTeacher(teacher);
 
         subjectService.update(current);
-        SubjectDto subjectDto = new SubjectDto(current);
-        return new ResponseEntity<SubjectDto>(subjectDto, HttpStatus.OK);
+        SubjectDto result = new SubjectDto(current);
+        return new ResponseEntity<SubjectDto>(result, HttpStatus.OK);
     }
 
     //API xóa một Admin với ID trên url.
