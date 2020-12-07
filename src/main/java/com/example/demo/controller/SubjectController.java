@@ -57,7 +57,10 @@ public class SubjectController {
 
     //API tạo một Admin mới.
     @RequestMapping(value = "/subject", method = RequestMethod.POST)
-    public ResponseEntity<Void> createSubject(@RequestBody Subject object, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity<Void> createSubject(@RequestBody SubjectDto subjectDto, UriComponentsBuilder ucBuilder) {
+        Subject object = new Subject(subjectDto);
+        Teacher teacher = teacherService.findById(subjectDto.getTeacherId());
+        object.setTeacher(teacher);
         System.out.println("Creating Subject " + object.getCode());
         subjectService.update(object);
         HttpHeaders headers = new HttpHeaders();
